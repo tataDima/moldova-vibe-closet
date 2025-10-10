@@ -14,7 +14,7 @@ interface Listing {
   condition: string;
   size: string | null;
   brand: string | null;
-  listing_images: { image_url: string }[];
+  listing_images?: { image_url: string }[];
 }
 
 const Favorites = () => {
@@ -38,22 +38,39 @@ const Favorites = () => {
   };
 
   const fetchFavorites = async (userId: string) => {
-    const { data: favoritesData, error } = await supabase
+    // First get favorite listing IDs
+    const { data: favoritesData, error: favError } = await supabase
       .from("favorites")
-      .select("listing_id, listings(id, title, price, condition, size, brand, listing_images(image_url))")
+      .select("listing_id")
       .eq("user_id", userId);
 
-    if (error) {
+    if (favError) {
       toast.error("Eroare la încărcarea favoritelor");
       setLoading(false);
       return;
     }
 
-    const listings = favoritesData
-      ?.map(fav => fav.listings)
-      .filter(Boolean) as any[];
+    if (!favoritesData || favoritesData.length === 0) {
+      setFavorites([]);
+      setLoading(false);
+      return;
+    }
+
+    // Then get the actual listings
+    const listingIds = favoritesData.map(fav => fav.listing_id);
     
-    setFavorites(listings || []);
+    const { data: listingsData, error: listingsError } = await supabase
+      .from("listings")
+      .select("id, title, price, condition, size, brand, listing_images(image_url)")
+      .in("id", listingIds);
+
+    if (listingsError) {
+      toast.error("Eroare la încărcarea produselor");
+      setLoading(false);
+      return;
+    }
+
+    setFavorites(listingsData as any || []);
     setLoading(false);
   };
 

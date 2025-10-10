@@ -41,7 +41,7 @@ const MyListings = () => {
   const fetchListings = async (userId: string) => {
     const { data, error } = await supabase
       .from("listings")
-      .select("id, title, price, condition, size, brand, created_at, listing_images(image_url)")
+      .select("id, title, price, condition, size, brand, created_at")
       .eq("seller_id", userId)
       .order("created_at", { ascending: false });
 
@@ -51,7 +51,24 @@ const MyListings = () => {
       return;
     }
 
-    setListings(data as any || []);
+    // Fetch images separately for each listing
+    const listingsWithImages = await Promise.all(
+      (data || []).map(async (listing) => {
+        const { data: images } = await supabase
+          .from("listing_images")
+          .select("image_url")
+          .eq("listing_id", listing.id)
+          .order("display_order")
+          .limit(1);
+        
+        return {
+          ...listing,
+          listing_images: images || []
+        };
+      })
+    );
+
+    setListings(listingsWithImages as any);
     setLoading(false);
   };
 

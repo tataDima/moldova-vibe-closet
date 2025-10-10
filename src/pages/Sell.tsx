@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ImageUpload } from "@/components/ImageUpload";
 import { toast } from "sonner";
 
 interface Category {
@@ -20,6 +21,7 @@ const Sell = () => {
   const navigate = useNavigate();
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(false);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -27,8 +29,7 @@ const Sell = () => {
     condition: "",
     category_id: "",
     size: "",
-    brand: "",
-    image_url: ""
+    brand: ""
   });
 
   useEffect(() => {
@@ -84,14 +85,16 @@ const Sell = () => {
       return;
     }
 
-    if (formData.image_url) {
+    if (imageUrls.length > 0) {
+      const imageInserts = imageUrls.map((url, index) => ({
+        listing_id: listing.id,
+        image_url: url,
+        display_order: index
+      }));
+
       await supabase
         .from("listing_images")
-        .insert({
-          listing_id: listing.id,
-          image_url: formData.image_url,
-          display_order: 0
-        });
+        .insert(imageInserts);
     }
 
     toast.success("Anunț creat cu succes!");
@@ -208,18 +211,12 @@ const Sell = () => {
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="image_url">URL imagine</Label>
-                  <Input
-                    id="image_url"
-                    type="url"
-                    value={formData.image_url}
-                    onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                    placeholder="https://example.com/image.jpg"
-                  />
-                </div>
+                <ImageUpload
+                  onImagesUploaded={setImageUrls}
+                  maxImages={5}
+                />
 
-                <Button type="submit" className="w-full" disabled={loading}>
+                <Button type="submit" className="w-full" disabled={loading || imageUrls.length === 0}>
                   {loading ? "Se publică..." : "Publică anunțul"}
                 </Button>
               </form>

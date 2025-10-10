@@ -101,6 +101,12 @@ export const Navbar = () => {
                     <DropdownMenuItem onClick={() => navigate("/my-listings")}>
                       Anunțurile Mele
                     </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate("/my-bids")}>
+                      Ofertele Mele
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate("/manage-bids")}>
+                      Gestionare Oferte
+                    </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => navigate("/favorites")}>
                       Favorite
                     </DropdownMenuItem>

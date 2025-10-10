@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { PlaceBidDialog } from "@/components/PlaceBidDialog";
 import { Heart, MessageSquare, MapPin } from "lucide-react";
 import { toast } from "sonner";
 
@@ -37,6 +38,7 @@ const ListingDetail = () => {
   const [seller, setSeller] = useState<Profile | null>(null);
   const [isFavorite, setIsFavorite] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
 
@@ -50,6 +52,7 @@ const ListingDetail = () => {
   const checkAuth = async () => {
     const { data: { session } } = await supabase.auth.getSession();
     setIsAuthenticated(!!session);
+    setCurrentUserId(session?.user?.id || null);
     if (session && id) {
       checkFavorite(session.user.id);
     }
@@ -237,10 +240,20 @@ const ListingDetail = () => {
                         )}
                       </div>
                     </div>
-                    <Button onClick={handleContact} className="w-full">
-                      <MessageSquare className="mr-2 h-4 w-4" />
-                      Contactează vânzătorul
-                    </Button>
+                    {currentUserId !== listing.seller_id && (
+                      <>
+                        <PlaceBidDialog
+                          listingId={listing.id}
+                          listingTitle={listing.title}
+                          listingPrice={listing.price}
+                          sellerId={listing.seller_id}
+                        />
+                        <Button onClick={handleContact} variant="outline" className="w-full">
+                          <MessageSquare className="mr-2 h-4 w-4" />
+                          Contactează vânzătorul
+                        </Button>
+                      </>
+                    )}
                   </CardContent>
                 </Card>
               )}

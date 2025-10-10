@@ -208,28 +208,6 @@ const Checkout = () => {
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle>Metodă de plată</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="cardNumber">Număr card</Label>
-                    <Input id="cardNumber" placeholder="1234 5678 9012 3456" />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="expiry">Data expirării</Label>
-                      <Input id="expiry" placeholder="MM/AA" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="cvv">CVV</Label>
-                      <Input id="cvv" placeholder="123" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
             </div>
 
             <div className="lg:col-span-1">

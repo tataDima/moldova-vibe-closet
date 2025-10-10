@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
-import { ShoppingCart, CreditCard } from "lucide-react";
+import { ShoppingCart, CreditCard, Loader2 } from "lucide-react";
 
 interface Listing {
   id: string;
@@ -92,11 +92,49 @@ const Checkout = () => {
   const handlePayment = async () => {
     setProcessing(true);
     
-    // Simulare procesare plată
-    setTimeout(() => {
-      toast.success("Comanda a fost plasată cu succes!");
-      navigate("/");
-    }, 2000);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        toast.error("Te rugăm să te autentifici");
+        navigate("/auth");
+        return;
+      }
+
+      console.log("Creating payment for:", {
+        listingId: id,
+        amount: finalPrice,
+        title: listing.title,
+        bidId: bidId || null,
+      });
+
+      const { data, error } = await supabase.functions.invoke('create-payment', {
+        body: {
+          listingId: id,
+          amount: finalPrice,
+          title: listing.title,
+          bidId: bidId || null,
+        },
+      });
+
+      if (error) {
+        console.error("Payment error:", error);
+        toast.error("Eroare la procesarea plății");
+        setProcessing(false);
+        return;
+      }
+
+      if (data?.url) {
+        window.open(data.url, '_blank');
+        toast.success("Redirecting to Stripe...");
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      }
+    } catch (error) {
+      console.error("Payment error:", error);
+      toast.error("Eroare la procesarea plății");
+      setProcessing(false);
+    }
   };
 
   if (loading || !listing) {
@@ -248,8 +286,17 @@ const Checkout = () => {
                     className="w-full" 
                     size="lg"
                   >
-                    <CreditCard className="mr-2 h-5 w-5" />
-                    {processing ? "Se procesează..." : "Finalizează comanda"}
+                    {processing ? (
+                      <>
+                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                        Se procesează...
+                      </>
+                    ) : (
+                      <>
+                        <CreditCard className="mr-2 h-5 w-5" />
+                        Plătește cu Stripe
+                      </>
+                    )}
                   </Button>
 
                   <p className="text-xs text-muted-foreground text-center">

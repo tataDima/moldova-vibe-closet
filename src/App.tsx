@@ -17,6 +17,7 @@ import MyListings from "./pages/MyListings";
 import ManageBids from "./pages/ManageBids";
 import MyBids from "./pages/MyBids";
 import Checkout from "./pages/Checkout";
+import PaymentSuccess from "./pages/PaymentSuccess";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -42,6 +43,7 @@ const App = () => (
           <Route path="/manage-bids" element={<ManageBids />} />
           <Route path="/my-bids" element={<MyBids />} />
           <Route path="/checkout/:id" element={<Checkout />} />
+          <Route path="/payment-success" element={<PaymentSuccess />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

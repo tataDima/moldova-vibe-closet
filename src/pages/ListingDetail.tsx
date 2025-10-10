@@ -241,7 +241,14 @@ const ListingDetail = () => {
                       </div>
                     </div>
                     {currentUserId !== listing.seller_id && (
-                      <>
+                      <div className="space-y-2">
+                        <Button 
+                          onClick={() => navigate(`/checkout/${listing.id}`)} 
+                          className="w-full" 
+                          size="lg"
+                        >
+                          Cumpără acum
+                        </Button>
                         <PlaceBidDialog
                           listingId={listing.id}
                           listingTitle={listing.title}
@@ -252,7 +259,7 @@ const ListingDetail = () => {
                           <MessageSquare className="mr-2 h-4 w-4" />
                           Contactează vânzătorul
                         </Button>
-                      </>
+                      </div>
                     )}
                   </CardContent>
                 </Card>

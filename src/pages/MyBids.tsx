@@ -200,7 +200,7 @@ const MyBids = () => {
                       </div>
                     )}
 
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center gap-2">
                       <p className="text-xs text-muted-foreground">
                         {new Date(bid.created_at).toLocaleDateString('ro-RO', {
                           year: 'numeric',
@@ -210,13 +210,23 @@ const MyBids = () => {
                           minute: '2-digit'
                         })}
                       </p>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => navigate(`/listing/${bid.listing_id}`)}
-                      >
-                        Vezi produsul
-                      </Button>
+                      <div className="flex gap-2">
+                        {(bid.status === "accepted" || bid.status === "counter_accepted") && (
+                          <Button
+                            size="sm"
+                            onClick={() => navigate(`/checkout/${bid.listing_id}?bid=${bid.id}`)}
+                          >
+                            Mergi la plată
+                          </Button>
+                        )}
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => navigate(`/listing/${bid.listing_id}`)}
+                        >
+                          Vezi produsul
+                        </Button>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>

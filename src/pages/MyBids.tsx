@@ -22,10 +22,6 @@ interface MyBid {
     price: number;
     seller_id: string;
   };
-  profiles: {
-    username: string;
-    full_name: string | null;
-  };
 }
 
 const MyBids = () => {
@@ -53,8 +49,7 @@ const MyBids = () => {
       .from("bids")
       .select(`
         *,
-        listings!inner(title, price, seller_id),
-        profiles!bids_seller_id_fkey(username, full_name)
+        listings!inner(title, price, seller_id)
       `)
       .eq("bidder_id", userId)
       .order("created_at", { ascending: false });
@@ -149,9 +144,6 @@ const MyBids = () => {
                     <div className="flex justify-between items-start">
                       <div>
                         <CardTitle className="text-lg">{bid.listings.title}</CardTitle>
-                        <p className="text-sm text-muted-foreground mt-1">
-                          Vânzător: {bid.profiles.full_name || bid.profiles.username}
-                        </p>
                       </div>
                       {getStatusBadge(bid.status)}
                     </div>

@@ -42,10 +42,6 @@ interface Bid {
     price: number;
     categories: { name: string } | null;
   };
-  profiles: {
-    username: string;
-    full_name: string | null;
-  };
 }
 
 const ManageBids = () => {
@@ -81,8 +77,7 @@ const ManageBids = () => {
       .from("bids")
       .select(`
         *,
-        listings!inner(title, price, categories(name)),
-        profiles!bids_bidder_id_fkey(username, full_name)
+        listings!inner(title, price, categories(name))
       `)
       .eq("seller_id", userId)
       .order("created_at", { ascending: false });
@@ -227,9 +222,6 @@ const ManageBids = () => {
         <div className="flex justify-between items-start">
           <div>
             <CardTitle className="text-lg">{bid.listings.title}</CardTitle>
-            <p className="text-sm text-muted-foreground mt-1">
-              De la: {bid.profiles.full_name || bid.profiles.username}
-            </p>
             {bid.listings.categories && (
               <Badge variant="outline" className="mt-2">{bid.listings.categories.name}</Badge>
             )}

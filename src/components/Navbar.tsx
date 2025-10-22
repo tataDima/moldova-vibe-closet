@@ -46,10 +46,13 @@ export const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between gap-4">
           <Link to="/" className="flex items-center space-x-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
-              <span className="text-xl font-bold text-primary-foreground">V</span>
+            <div className="flex h-10 w-10 items-center justify-center">
+              <img src="/assets/S-Logo-White.png" alt="SARA Fan Logo" className="h-8 w-8 object-contain" />
             </div>
-            <span className="hidden text-xl font-bold sm:inline-block">Vinted MD</span>
+            <div className="mt-1">
+              <span className="hidden text-xl font-bold sm:inline-block font-gilroy">SARA</span>
+              <span className="hidden text-xl font-bold sm:inline-block font-nyght">Fan</span>
+            </div>
           </Link>
 
           <form onSubmit={handleSearch} className="flex flex-1 max-w-xl">

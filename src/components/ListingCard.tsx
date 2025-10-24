@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { getProductConditionLabel, ProductCondition } from "@/models/products";
 
 interface ListingCardProps {
   id: string;
@@ -107,7 +108,7 @@ export const ListingCard = ({ id, title, price, imageUrl, condition, size, brand
           <p className="text-base font-bold text-primary whitespace-nowrap">{price.toFixed(2)} MDL</p>
         </div>
         <div className="flex flex-wrap gap-1">
-          <Badge variant="secondary" className="text-xs">{condition}</Badge>
+          <Badge variant="secondary" className="text-xs">{getProductConditionLabel(condition)}</Badge>
           {size && <Badge variant="outline" className="text-xs">{size}</Badge>}
           {brand && <Badge variant="outline" className="text-xs">{brand}</Badge>}
         </div>

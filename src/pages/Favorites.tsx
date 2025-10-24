@@ -11,7 +11,7 @@ interface Listing {
   id: string;
   title: string;
   price: number;
-  condition: string;
+  condition: ProductCondition;
   size: string | null;
   brand: string | null;
   listing_images?: { image_url: string }[];

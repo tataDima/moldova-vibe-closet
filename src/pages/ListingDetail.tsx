@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { PlaceBidDialog } from "@/components/PlaceBidDialog";
 import { Heart, MessageSquare, MapPin } from "lucide-react";
 import { toast } from "sonner";
+import { getProductConditionLabel } from "@/models/products";
 
 interface Listing {
   id: string;
@@ -201,7 +202,7 @@ const ListingDetail = () => {
                 </div>
                 <p className="text-4xl font-bold text-primary mb-4">{listing.price.toFixed(2)} MDL</p>
                 <div className="flex flex-wrap gap-2 mb-4">
-                  <Badge variant="secondary">{listing.condition}</Badge>
+                  <Badge variant="secondary">{ getProductConditionLabel(listing.condition) }</Badge>
                   {listing.size && <Badge variant="outline">{listing.size}</Badge>}
                   {listing.brand && <Badge variant="outline">{listing.brand}</Badge>}
                   {listing.categories && (

@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ImageUpload } from "@/components/ImageUpload";
 import { toast } from "sonner";
+import { getProductConditionLabel, ProductConditionValues } from "@/models/products/productCondition";
 
 interface Category {
   id: string;
@@ -160,11 +161,9 @@ const Sell = () => {
                         <SelectValue placeholder="Selectează" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="new">Nou</SelectItem>
-                        <SelectItem value="like_new">Ca nou</SelectItem>
-                        <SelectItem value="good">Bun</SelectItem>
-                        <SelectItem value="fair">Satisfăcător</SelectItem>
-                        <SelectItem value="worn">Uzat</SelectItem>
+                        {ProductConditionValues.map((condition) => {
+                          return <SelectItem key={condition} value={condition}>{getProductConditionLabel(condition)}</SelectItem>
+                        })}
                       </SelectContent>
                     </Select>
                   </div>

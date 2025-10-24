@@ -160,11 +160,11 @@ const Sell = () => {
                         <SelectValue placeholder="Selectează" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Nou">Nou</SelectItem>
-                        <SelectItem value="Ca nou">Ca nou</SelectItem>
-                        <SelectItem value="Foarte bun">Foarte bun</SelectItem>
-                        <SelectItem value="Bun">Bun</SelectItem>
-                        <SelectItem value="Satisfăcător">Satisfăcător</SelectItem>
+                        <SelectItem value="new">Nou</SelectItem>
+                        <SelectItem value="like_new">Ca nou</SelectItem>
+                        <SelectItem value="good">Bun</SelectItem>
+                        <SelectItem value="fair">Satisfăcător</SelectItem>
+                        <SelectItem value="worn">Uzat</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
